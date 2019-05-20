@@ -2,7 +2,7 @@
 java programs for hangman
 
 
-Playback.java  :
+Funconality/Playback.java  :
 
 1) Create buttons and add them to the frame
 
