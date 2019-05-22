@@ -16,7 +16,7 @@ import java.awt.event.ActionListener;
 
 
 public class Playback extends JFrame  {
-    private String name;
+    public String name;
 
     public String NameGetter(String name){
         return name;
@@ -31,7 +31,7 @@ public class Playback extends JFrame  {
         String mes;
         setLookAndFeel();
         setSize(450, 200);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JLabel pageLabel = new JLabel("Your Name  :", JLabel.LEFT);
 
         FlowLayout flo = new FlowLayout();
@@ -42,13 +42,14 @@ public class Playback extends JFrame  {
         JButton pause = new JButton("Pause");
 
         add(pageLabel);
+        add(pageAddress);
         add(play);
         add(stop);
         add(pause);
 
-        add(pageAddress);
-        //Lambda definition for methods play and stop
-        // Anonymous class
+
+        //Lambda expression for methods play and stop
+
 
         ActionListener act = (event) ->{
 
@@ -57,7 +58,7 @@ public class Playback extends JFrame  {
             }
             if(event.getSource() == stop) {
 
-                System.exit(1);
+                System.exit(0);
             }
         };
         play.addActionListener(act);
@@ -78,10 +79,10 @@ public class Playback extends JFrame  {
         }
     }
 
-    public static void main(String[] args) {
-
-        Playback frame = new Playback();
-
-    }
+//    public static void main(String[] args) {
+//
+//        new Playback();
+//
+//    }
 }
 
