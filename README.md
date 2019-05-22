@@ -29,7 +29,9 @@ a new variable NamePlayerNow, and than  displays( use it for some purpose) it.
 
 The psvm from Playback is deactivated, avoiding overlapping
 
-interfaces(input frames - once an instance of the class is generated)
+interfaces(input frames - once an instance of the class is generated. The 
+
+secret being that the instance is created in the constructor of the new class)
 
 as well as, assigning a null value to a
 
