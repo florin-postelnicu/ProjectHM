@@ -20,12 +20,14 @@ For setter use getText() method to load the variable name.
 
 Functionality/SampleApplet
 
-The purpuse of this class is to have constructor that creates 
+The purpuse of this class is to have a constructor that creates 
 
-a new variable NamePlayerNow, and than  idplays it.
+a new variable NamePlayerNow, and than  dplays( use it for some purpose) it.
 
 The psvm from Playback is deactivated, avoiding overlapping
 
-interfaces(input frames) as well as, assigning a null value to a
+interfaces(input frames - once an instance of the class is generated)
+
+as well as, assigning a null value to a
 
 variable used prior to be setted.
