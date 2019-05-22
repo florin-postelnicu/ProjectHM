@@ -4,6 +4,7 @@ java programs for hangman
 
 Functionality/Playback.java  :
 
+
 1) Create buttons and add them to the frame
 
 2) Use ActionListener to create lambda methods for
@@ -18,7 +19,9 @@ For setter use getText() method to load the variable name.
 5) Set LookAndFeel
 
 
+
 Functionality/SampleApplet
+
 
 The purpuse of this class is to have a constructor that creates 
 
