@@ -25,7 +25,7 @@ Functionality/SampleApplet
 
 The purpuse of this class is to have a constructor that creates 
 
-a new variable NamePlayerNow, and than  dplays( use it for some purpose) it.
+a new variable NamePlayerNow, and than  displays( use it for some purpose) it.
 
 The psvm from Playback is deactivated, avoiding overlapping
 
