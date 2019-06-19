@@ -41,6 +41,8 @@ variable used prior to be setted.
 
 Serialization and Deserialization
 
+
+
 Let’s understand this by examining computer games. When we stop or pause a running computer game, it usually starts from the state where it was left off when we play it again. This is possible through the process of Serialization; which is saving the current object state as byte stream into file or database. Then to restore the object’s state when we access the game again is called Deserialization.
 
 Before we dive deeper into it, let’s first understand what streams are in computer systems. A stream is nothing but the sequence of data elements. In a computer system, there is a source that generates data in the form of stream and there is a destination which reads and consumes this stream. Here are the types of streams:
