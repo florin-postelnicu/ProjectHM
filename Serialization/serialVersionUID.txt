@@ -1,4 +1,8 @@
 
+
+UID  = Unique Identifier
+
+
 How many times you have added serialVersionUID to your code. But why? The answer is because your IDE forces to do that. 
 
 90% of developers who add serialVersionUID into their programs they don't know why it's really needed.
