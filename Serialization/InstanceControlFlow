@@ -1,0 +1,392 @@
+Instance Control Flow is as important as Static Control Flow in Java. Whenever we are executing a java class, first, the static control flow will be executed. In the static control flow, if we are creating an object, then instance control flow will be executed.
+
+The following sequence of steps will be executed as a part of instance control flow:
+
+Identification of instance members from top to bottom. (instance variables, methods, and blocks are considered instance members)
+Execution of instance variable assignments and instance blocks from top to bottom.
+Execution of constructor for that particular instance.
+Example of Instance Control Flow
+
+// Main class
+public class InstanceControlFlowDemo
+{
+	// initializing integer var1 to be 5
+	int var1 = 5;
+	{ // first instance block
+		method();
+		System.out.println("First Instance Block");		
+	}
+	
+	// Constructor
+	InstanceControlFlowDemo()
+	{
+		System.out.println("Constructor is executing");						
+	}
+	
+	// static main method
+	public static void main(String[] args)
+	{
+		// Creating object of InstanceControlFlowDemo
+		InstanceControlFlowDemo icfd = new InstanceControlFlowDemo();
+		System.out.println("Main method is executing");				
+	}
+	
+	// method
+	public void method()
+	{
+		// displaying value of var2
+		System.out.println(var2);
+	}
+
+	// second instance block
+	{
+		System.out.println("Second Instance Block");
+	}
+
+	// initializing integer var2 to be 10
+    int var2 = 10;
+}
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+ 
+// Main class
+public class InstanceControlFlowDemo
+{
+	// initializing integer var1 to be 5
+	int var1 = 5;
+	{ // first instance block
+		method();
+		System.out.println("First Instance Block");		
+	}
+	
+	// Constructor
+	InstanceControlFlowDemo()
+	{
+		System.out.println("Constructor is executing");						
+	}
+	
+	// static main method
+	public static void main(String[] args)
+	{
+		// Creating object of InstanceControlFlowDemo
+		InstanceControlFlowDemo icfd = new InstanceControlFlowDemo();
+		System.out.println("Main method is executing");				
+	}
+	
+	// method
+	public void method()
+	{
+		// displaying value of var2
+		System.out.println(var2);
+	}
+ 
+	// second instance block
+	{
+		System.out.println("Second Instance Block");
+	}
+ 
+	// initializing integer var2 to be 10
+    int var2 = 10;
+}
+ 
+When we run the above program, first static control flow will take place and it will execute static main method.
+Our main method creates an object. So, for that, instance control flow will execute in three steps as discussed earlier.
+
+In the first step, all the instance members will be identified from top to bottom. Here, six instance members will be identified in this program which involves two variables, two blocks a method and a constructor.
+
+
+ 
+Note that variables are not assigned value during the first step. So, at the end of Step 1,
+
+Value of var1 = 0
+Value of var2 = 0
+
+Now, during step 2, these instance variables are assigned their respective values and instance blocks are executed from top to bottom.
+
+
+ 
+At the end of second step,
+
+Value of var1 = 5
+Value of var2 = 10
+
+Note that when first instance block is executed from top to bottom, var2 is not assigned the value yet. So, when method() is called from first instance block, it will print var2’s old value which is 0.
+
+Look at the output to understand the instance control flow in a better way.
+
+Output:
+
+
+0
+First Instance Block
+Second Instance Block
+Constructor is executing
+Main method is executing
+
+0
+First Instance Block
+Second Instance Block
+Constructor is executing
+Main method is executing
+ 
+However, if we don’t create object inside main method, then instance control flow will not happen and in that case, output will be based on main method execution only. Look at the following output that we get if we do not create an object inside main method and remove that one line of object creation.
+
+Output:
+
+
+Main method is executing
+
+1
+2
+3
+ 
+Main method is executing
+ 
+Note that, static control flow is a one-time activity which is performed only once at the time of class loading. But instance control flow is not one-time activity and it will be performed for every object creation.
+
+Thus, object creation is a costly operation. If there is no specific requirement, then we should not create objects.
+
+Instance Control Flow in Parent-Child Relationship
+Whenever we are creating Child class object, the following sequence of events will be performed automatically as a part of instance control flow.
+
+Identification of instance members from parent to child. (instance variables, methods, and blocks are considered instance members)
+The execution of instance variable assignments and instance blocks only in parent class.
+Implementation of parent class constructor.
+Execution of instance variable assignments and instance blocks only in child class.
+Implementation of child class constructor.
+Consider the following example.
+
+
+//Parent class
+class Parent
+{
+	// initializing parent class integer pvar1 to be 5
+	int pvar1 = 5;
+
+	// first instance block of Parent
+	{
+		// calling pmethod
+		pmethod();
+		System.out.println("First Instance Block of Parent");		
+	}
+	
+	// Parent constructor
+	Parent()
+	{
+	    System.out.println("Parent Constructor");
+	}
+	
+	// static main method of Parent
+	public static void main(String[] args)
+	{
+	    // creating object of Parent
+		Parent p = new Parent();
+		System.out.println("Parent class Main method is executing");				
+	}
+	
+	// pmethod
+	public void pmethod()
+	{
+		// displaying value of var2
+		System.out.println(pvar2);
+	}
+
+	// initializing parent class integer pvar2 to be 10
+	int pvar2 = 10;
+}
+
+
+//Child class
+class Child extends Parent
+{
+	// initializing child class integer cvar1 to be 50
+	int cvar1 = 50;
+
+	// first instance block of Child
+	{
+		// calling cmethod() from first instance block
+		cmethod();
+		System.out.println("First Instance Block of Child");		
+	}
+	
+	// Child constructor
+	Child()
+	{
+	    System.out.println("Child Constructor");
+	}
+	
+	// static main method of Child class
+	public static void main(String[] args)
+	{
+     // creating object of Child
+     Child c = new Child();
+		System.out.println("Child class Main method is executing");				
+	}
+	
+	// cmethod
+	public void cmethod()
+	{
+		// displaying value of cvar2
+		System.out.println(cvar2);
+	}
+
+	// second instance block of Child
+	{
+		System.out.println("Second Instance Block of Child");
+	}
+
+	// initializing child class integer cvar2 to be 100
+	int cvar2 = 100;
+}
+
+ 
+//Parent class
+class Parent
+{
+	// initializing parent class integer pvar1 to be 5
+	int pvar1 = 5;
+ 
+	// first instance block of Parent
+	{
+		// calling pmethod
+		pmethod();
+		System.out.println("First Instance Block of Parent");		
+	}
+	
+	// Parent constructor
+	Parent()
+	{
+	    System.out.println("Parent Constructor");
+	}
+	
+	// static main method of Parent
+	public static void main(String[] args)
+	{
+	    // creating object of Parent
+		Parent p = new Parent();
+		System.out.println("Parent class Main method is executing");				
+	}
+	
+	// pmethod
+	public void pmethod()
+	{
+		// displaying value of var2
+		System.out.println(pvar2);
+	}
+ 
+	// initializing parent class integer pvar2 to be 10
+	int pvar2 = 10;
+}
+ 
+ 
+//Child class
+class Child extends Parent
+{
+	// initializing child class integer cvar1 to be 50
+	int cvar1 = 50;
+ 
+	// first instance block of Child
+	{
+		// calling cmethod() from first instance block
+		cmethod();
+		System.out.println("First Instance Block of Child");		
+	}
+	
+	// Child constructor
+	Child()
+	{
+	    System.out.println("Child Constructor");
+	}
+	
+	// static main method of Child class
+	public static void main(String[] args)
+	{
+     // creating object of Child
+     Child c = new Child();
+		System.out.println("Child class Main method is executing");				
+	}
+	
+	// cmethod
+	public void cmethod()
+	{
+		// displaying value of cvar2
+		System.out.println(cvar2);
+	}
+ 
+	// second instance block of Child
+	{
+		System.out.println("Second Instance Block of Child");
+	}
+ 
+	// initializing child class integer cvar2 to be 100
+	int cvar2 = 100;
+}
+ 
+The above program will generate following output after performing 5 steps in the correct order as described earlier.
+
+Output:
+
+
+0
+First Instance Block of Parent
+Parent Constructor
+0
+First Instance Block of Child
+Second Instance Block of Child
+Child Constructor
+Child class Main method is executing
+
+
+ 
+0
+First Instance Block of Parent
+Parent Constructor
+0
+First Instance Block of Child
+Second Instance Block of Child
+Child Constructor
+Child class Main method is executing
+ 
+This is all about Instance Control Flow in Java. Hope you find this tutorial helpful.
+
+
