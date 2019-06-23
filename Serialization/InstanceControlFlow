@@ -1,4 +1,6 @@
-Instance Control Flow is as important as Static Control Flow in Java. Whenever we are executing a java class, first, the static control flow will be executed. In the static control flow, if we are creating an object, then instance control flow will be executed.
+Instance Control Flow is as important as Static Control Flow in Java.
+Whenever we are executing a java class, first, the static control flow will be executed.
+In the static control flow, if we are creating an object, then instance control flow will be executed.
 
 The following sequence of steps will be executed as a part of instance control flow:
 
@@ -47,47 +49,7 @@ public class InstanceControlFlowDemo
     int var2 = 10;
 }
 
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
+
  
 // Main class
 public class InstanceControlFlowDemo
