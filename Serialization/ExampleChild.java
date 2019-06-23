@@ -35,22 +35,65 @@ the Original Value in the Parent class.
 Hence:
 R5
 
+
+If modifying the program such that the Parent constructor is :
+
+  ParentNotSer(int i){
+
+        System.out.println("This is a constructor in ParentNotSer");
+
+    }
+    therefore, depending on var i,
+    and , as a consequence the Child superimposes
+    super(10) the value for i
+    then the running is :
+
+    This is a constructor in ParentNotSer
+This is a constructor for ChildSer
+baby.i : 888...baby.j : 999
+Serialization Started
+Deserialization started now
+Exception in thread "main" java.io.InvalidClassException: ChildSer; no valid constructor
+	at java.io.ObjectStreamClass$ExceptionInfo.newInvalidClassException(ObjectStreamClass.java:169)
+	at java.io.ObjectStreamClass.checkDeserialize(ObjectStreamClass.java:874)
+	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:2043)
+	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1573)
+	at java.io.ObjectInputStream.readObject(ObjectInputStream.java:431)
+	at ControlFlowDemo.main(ExampleChild.java:74)
+
+Process finished with exit code 1
+
+
+Conclusion:
+The Parent class if not Serializable, than it shouldn't contain
+an argument Constructor.
+for example
+ParentNotSr( int i){
+...}
+Here the argument is the variable i.
+
  */
 import java.io.*;
 
 class ParentNotSer {
 
     int i = 10;
-    ParentNotSer(){
-
+//    ParentNotSer(int i){
+//
+//        System.out.println("This is a constructor in ParentNotSer");
+//
+//    }
+    ParentNotSer (){
         System.out.println("This is a constructor in ParentNotSer");
-        int costr = 25;
+
     }
 }
 
 class ChildSer extends ParentNotSer implements Serializable {
     int j = 100;
+
     ChildSer() {
+//        super(10); // used only with the special constructor
         System.out.println("This is a constructor for ChildSer");
     }
 }
