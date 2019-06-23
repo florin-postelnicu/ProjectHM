@@ -118,3 +118,15 @@ class ControlFlowDemo {
 
     }
 }
+
+
+The result:
+This is a constructor in ParentNotSer
+This is a constructor for ChildSer
+baby.i : 888...baby.j : 999
+Serialization Started
+Deserialization started now 
+This is a constructor in ParentNotSer
+babymare.i : 10...babymare.j : 999
+
+Process finished with exit code 0
