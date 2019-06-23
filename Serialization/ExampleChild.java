@@ -68,7 +68,7 @@ Conclusion:
 The Parent class if not Serializable, than it shouldn't contain
 an argument Constructor.
 for example
-ParentNotSr( int i){
+ParentNotSer( int i){
 ...}
 Here the argument is the variable i.
 
