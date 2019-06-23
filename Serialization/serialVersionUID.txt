@@ -1,0 +1,182 @@
+
+How many times you have added serialVersionUID to your code. But why? The answer is because your IDE forces to do that. 90% of developers who add serialVersionUID into their programs they don't know why it's really needed.
+
+You're probably familiar with serialization and deserialization. In simple terms, Java objects exist only within the limits of the JVM. When the JVM exits, object values also get destroyed. Serialization means you save the objects as bytes somewhere. Probably in the filesystem. Deserialization means you read these bytes as constructing the Java object again. But how can you make sure the class remains unchanged from serialization to deserialization?
+
+For example, say it is January 1 and we have the Employee class as follows:
+
+public class Employee {
+    private String id;
+    private String name;
+    private int age;
+}
+
+
+With those, you serialized the data to your file system as empdata.dat on the same day.
+
+Now, on January 2, someone changes the class as follows:
+
+public class Employee {
+    private String id;
+    private String name;
+    private Date dateOfBirth;
+}
+
+
+If you are trying to restore (deserialization) empdata.dat to the Employee class, you can see it is not correct. 
+
+Those are two different formats. Note: Technically, this will deserialize without error, skipping the missing field. 
+
+But your business logic output may not as expected.
+
+Here is where we need serialVersionUID. It is used during deserialization to verify that the sender 
+
+( the person who serializes) and receiver ( the person who deserializes) of a serialized object have loaded classes 
+
+for that object that are compatible with respect to serialization. In case a receiver has loaded a class for the object 
+
+that has a different serialVersionUID than that used to serialize, then deserialization will end with InvalidClassException.
+
+A serializable class can declare its own serialVersionUID explicitly by declaring a field named “serialVersionUID” 
+
+that must be static, final, and of type long:.
+
+Here, for ease of understanding, we are using save and read to file system.
+
+But serialization can happen in runtime itself through the wire, so the sender and receiver would be in an identical world 
+
+to save and read.
+
+Even though your IDE insisted you to add seriaVersionUID, you can still compile the program without a compiler error. 
+
+In such a case, the serialization runtime will calculate a default serialVersionUID value for that class.
+
+This calculation will be based on several factors. Therefore, we cannot expect the same answer for even the same class 
+
+in different JVM and compiler implementations.
+
+It is strongly recommended that all serializable classes explicitly declare serialVersionUID values. 
+
+Otherwise, it can ring a false alarm — even for valid scenarios. 
+
+To guarantee a consistent serialVersionUID value across different Java compiler implementations,
+
+a serializable class must declare an explicit serialVersionUID value.
+
+Another point is strongly advised: explicit serialVersionUID declarations use the private modifier where possible,
+
+so declarations apply only to the immediately declaring class. There is one case this rule does not apply: Array classes.
+
+Those cannot declare an explicit serialVersionUID, so those always have the default computed value, 
+
+but the requirement for matching serialVersionUID values is waived for Array classes.
+
+
+Let's try this with an example.
+
+
+
+Create a project in your favorite IDE and implement the following class. (The path name should be changed as needed):
+
+package com.krishantha.sample.java.serialVersion;
+import java.io.Serializable;
+public class Employee implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private String name;
+    private byte age;
+    private String address;
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public byte getAge() {
+        return age;
+    }
+    public void setAge(byte age) {
+        this.age = age;
+    }
+    public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    public String whoIsThis() {
+        StringBuffer employee = new StringBuffer();
+        employee.append(getName()).append(" is ").append(getAge()).append(" years old and lives at ")
+                .append(getAddress());
+        return employee.toString();
+    }
+}
+
+
+Then implement the class below to write a serialized object (serialization):
+
+package com.krishantha.sample.java.serialVersion;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+public class Writer {
+    public static void main(String[] args) throws IOException {
+        Employee employee = new Employee();
+        employee.setName("Ashintha");
+        employee.setAge((byte) 30);
+        employee.setAddress("Galle");
+        FileOutputStream fout = new FileOutputStream("/users/krishantha/employee.obj");
+        ObjectOutputStream oos = new ObjectOutputStream(fout);
+        oos.writeObject(employee);
+        oos.close();
+        System.out.println("Process complete");
+    }
+}
+
+
+Then implement the class below to read the serialized object (deserialization):
+
+package com.krishantha.sample.java.serialVersion;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+public class Reader {
+    public static void main(String[] args) throws ClassNotFoundException, IOException {
+        Employee employee = new Employee();
+        FileInputStream fin = new FileInputStream("/users/krishantha/employee.obj");
+        ObjectInputStream ois = new ObjectInputStream(fin);
+        employee = (Employee) ois.readObject();
+        ois.close();
+        System.out.println(employee.whoIsThis());
+    }
+}
+
+
+Now you are all set. Execute the Writer class, and it will create a file in the given path.
+
+Process complete
+
+
+Now execute the Reader class. It will read the values from the object.
+
+Ashintha is 30 years old and lives at Galle
+
+
+Now change the serialVersionUID of the Employee class and save:
+
+private static final long serialVersionUID = 2L;
+
+
+Now, again, execute the Reader class. (Make sure not to execute the Writer class):
+
+Exception in thread "main" java.io.InvalidClassException: com.krishantha.sample.java.serialVersion.Employee; local class incompatible: stream classdesc serialVersionUID = 1, local class serialVersionUID = 2
+    at java.io.ObjectStreamClass.initNonProxy(ObjectStreamClass.java:616)
+    at java.io.ObjectInputStream.readNonProxyDesc(ObjectInputStream.java:1623)
+    at java.io.ObjectInputStream.readClassDesc(ObjectInputStream.java:1518)
+    at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1774)
+    at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1351)
+    at java.io.ObjectInputStream.readObject(ObjectInputStream.java:371)
+    at com.krishantha.sample.java.serialVersion.Reader.main(Reader.java:14)
+
+
+This means the Employee class has changed in terms of serialization. You can try to revert to the old id and see — it will work.
+
