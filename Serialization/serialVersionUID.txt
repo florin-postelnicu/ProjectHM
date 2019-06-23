@@ -1,7 +1,15 @@
 
-How many times you have added serialVersionUID to your code. But why? The answer is because your IDE forces to do that. 90% of developers who add serialVersionUID into their programs they don't know why it's really needed.
+How many times you have added serialVersionUID to your code. But why? The answer is because your IDE forces to do that. 
 
-You're probably familiar with serialization and deserialization. In simple terms, Java objects exist only within the limits of the JVM. When the JVM exits, object values also get destroyed. Serialization means you save the objects as bytes somewhere. Probably in the filesystem. Deserialization means you read these bytes as constructing the Java object again. But how can you make sure the class remains unchanged from serialization to deserialization?
+90% of developers who add serialVersionUID into their programs they don't know why it's really needed.
+
+You're probably familiar with serialization and deserialization. In simple terms, Java objects exist only within the limits
+
+of the JVM. When the JVM exits, object values also get destroyed. Serialization means you save the objects as bytes 
+
+somewhere. Probably in the filesystem. Deserialization means you read these bytes as constructing the Java object again.
+
+But how can you make sure the class remains unchanged from serialization to deserialization?
 
 For example, say it is January 1 and we have the Employee class as follows:
 
