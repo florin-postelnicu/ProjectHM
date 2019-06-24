@@ -1,0 +1,221 @@
+1. Introduction
+In this tutorial, we’ll have a quick look at java’s java.io.Externalizable interface. 
+
+The main goal of this interface is to facilitate custom serialization and deserialization.
+
+Before we go ahead, make sure you check out the serialization in Java article. 
+
+The next chapter is about how to serialize a Java object with this interface.
+
+After that, we’re going to discuss the key differences compared to the java.io.Serializable interface.
+
+2. The Externalizable Interface
+
+Externalizable extends from the java.io.Serializable marker interface. 
+
+Any class that implements Externalizable interface should override the writeExternal(), readExternal() methods. 
+
+That way we can change the JVM’s default serialization behavior.
+
+2.1. Serialization
+Let’s have a look at this simple example:
+
+
+public class Country implements Externalizable {
+   
+    private static final long serialVersionUID = 1L;
+   
+    private String name;
+    private int code;
+   
+    // getters, setters
+   
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeUTF(name);
+        out.writeInt(code);
+    }
+   
+    @Override
+    public void readExternal(ObjectInput in) 
+      throws IOException, ClassNotFoundException {
+        this.name = in.readUTF();
+        this.code = in.readInt();
+    }
+}
+Here, we’ve defined a class Country that implements the Externalizable interface and implements the two methods
+
+mentioned above.
+
+In the writeExternal() method, we’re adding the object’s properties to the ObjectOutput stream.
+
+This has standard methods like writeUTF() for String and writeInt() for the int values.
+
+Next, for deserializing the object, we’re reading from the ObjectInput stream using the readUTF(), readInt() methods
+
+to read the properties in the same exact order in which they were written.
+
+It’s a good practice to add the serialVersionUID manually. If this is absent, the JVM will automatically add one.
+
+The automatically generated number is compiler dependent. This means it may cause an unlikely InvalidClassException.
+
+Let’s test the behavior we implemented above:
+
+
+@Test
+public void whenSerializing_thenUseExternalizable() 
+  throws IOException, ClassNotFoundException {
+        
+    Country c = new Country();
+    c.setCode(374);
+    c.setName("Armenia");
+    
+    FileOutputStream fileOutputStream
+     = new FileOutputStream(OUTPUT_FILE);
+    ObjectOutputStream objectOutputStream
+     = new ObjectOutputStream(fileOutputStream);
+    c.writeExternal(objectOutputStream);
+    
+    objectOutputStream.flush();
+    objectOutputStream.close();
+    fileOutputStream.close();
+    
+    FileInputStream fileInputStream
+     = new FileInputStream(OUTPUT_FILE);
+    ObjectInputStream objectInputStream
+     = new ObjectInputStream(fileInputStream);
+    
+    Country c2 = new Country();
+    c2.readExternal(objectInputStream);
+    
+    objectInputStream.close();
+    fileInputStream.close();
+    
+    assertTrue(c2.getCode() == c.getCode());
+    assertTrue(c2.getName().equals(c.getName()));
+}
+In this example, we’re first creating a Country object and writing it to a file.
+
+Then, we’re deserializing the object from the file and verifying the values are correct.
+
+The output of the printed c2 object:
+
+1
+Country{name='Armenia', code=374}
+This shows we’ve successfully deserialized the object.
+
+2.2. Inheritance
+When a class inherits from the Serializable interface, the JVM automatically collects all the fields from sub-classes as well
+
+and makes them serializable.
+
+Keep in mind that we can apply this to Externalizable as well. 
+
+We just need to implement the read/write methods for every sub-class of the inheritance hierarchy.
+
+Let’s look at the Region class below which extends our Country class from the previous section:
+
+
+public class Region extends Country implements Externalizable {
+  
+    private static final long serialVersionUID = 1L;
+  
+    private String climate;
+    private Double population;
+  
+    // getters, setters
+  
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        super.writeExternal(out);
+        out.writeUTF(climate);
+    }
+  
+    @Override
+    public void readExternal(ObjectInput in) 
+      throws IOException, ClassNotFoundException {
+  
+        super.readExternal(in);
+        this.climate = in.readUTF();
+    }
+}
+Here, we added two additional properties and serialized the first one.
+
+Note that we also called super.writeExternal(out), super.readExternal(in) within serializer methods
+
+to save/restore the parent class fields as well.
+
+Let’s run the unit test with the following data:
+
+
+Region r = new Region();
+r.setCode(374);
+r.setName("Armenia");
+r.setClimate("Mediterranean");
+r.setPopulation(120.000);
+Here’s the deserialized object:
+
+
+Region{
+  country='Country{
+    name='Armenia',
+    code=374}'
+  climate='Mediterranean', 
+  population=null
+}
+Notice that since we didn’t serialize the population field in Region class, the value of that property is null.
+
+3. Externalizable vs Serializable
+
+Let’s go through the key differences between the two interfaces:
+
+Serialization Responsibility
+
+The key difference here is how we handle the serialization process.
+
+When a class implements the java.io.Serializable interface, the JVM takes full responsibility 
+
+for serializing the class instance. In case of Externalizable, 
+
+it’s the programmer who should take care of the whole serialization and also deserialization process.
+
+Use Case
+
+If we need to serialize the entire object, the Serializable interface is a better fit.
+
+On the other hand, for custom serialization, we can control the process using Externalizable.
+
+Performance
+
+The java.io.Serializable interface uses reflection and metadata which causes relatively slow performance.
+
+By comparison, the Externalizable interface gives you full control over the serialization process.
+
+Reading Order
+
+While using Externalizable, it’s mandatory to read all the field states in the exact order as they were written.
+
+Otherwise, we’ll get an exception.
+
+For example, if we change the reading order of the code and name properties in the Country class,
+
+a java.io.EOFException will be thrown.
+
+Meanwhile, the Serializable interface doesn’t have that requirement.
+
+Custom Serialization
+We can achieve custom serialization with the Serializable interface by marking the field with transient keyword. 
+
+The JVM won’t serialize the particular field but it’ll add up the field to file storage with the default value. 
+
+That’s why it’s a good practice to use Externalizable in case of custom serialization.
+
+4. Conclusion
+In this short guide to the Externalizable interface, we discussed the key features, 
+
+advantages and demonstrated examples of 
+
+simple use. We also made a comparison with the Serializable interface.
+
+As usual, the full source code of the tutorial is available over on GitHub.
+
