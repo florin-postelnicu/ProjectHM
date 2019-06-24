@@ -1,1 +1,36 @@
 Test
+
+List of Marker Interfaces in Java
+java.lang.Cloneable
+java.util.EventListener
+java.io.Serializable
+java.rmi.Remote
+javax.servlet.SingleThreadModel
+javax.ejb.EnterpriseBean
+java.util.RandomAccess
+
+
+Articles
+
+Other interesting articles which you may like …
+JVM Architecture – Understanding JVM Internals
+Object and Object Class in Java
+Difference between JDK, JRE and JVM
+Components of Java Development Kit (JDK)
+What is a Class in Java with Example
+How to open .class file in Java
+How to Set Classpath for Java in Windows
+Difference Between ClassNotFoundException Vs NoClassDefFoundError In Java
+How HashMap works in Java
+How to make a class Immutable in Java
+Polymorphism in Java – Method Overloading and Overriding
+Types of polymorphism in java
+Types of Inheritance in Java
+Why Java does not supports Multiple Inheritance – Diamond Problem?
+Java Method Overloading Example
+Java Constructor Overloading Example
+Java this keyword | Core Java Tutorial
+Java super keyword
+Abstract Class in Java
+Serialization and Deserialization in Java with Example
+Generate SerialVersionUID in Java
